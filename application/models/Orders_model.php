@@ -23,14 +23,29 @@ class Orders_model extends CI_Model {
         }
     }
 
-    public function get_orders ( $where, $limit = 10, $offset = 0 ) {
-        if ( $where != FALSE ) {
-            $query = $this->db->get_where('orders', $where, $limit, $offset);
-            return $query->row_array();
+    public function get_orders ( $where = null, $conditionType = null, $limit = null, $offset = 0 ) {
+        $query = $this->db;
+
+        if ($conditionType == 'where') {
+            $query = $query->where($where);
         }
-        else {
-            return FALSE;
+
+        if ($conditionType == 'in') {
+            $query = $query->where_in($where);
         }
+
+        if ($conditionType == 'like') {
+            $query = $query->like($where);
+        }
+
+        if ($limit) {
+            $query = $query->limit($limit, $offset);
+        }
+
+        $query = $query->get('orders');
+        $result = $query->result_array();
+
+        return $result;
     }
 
     public function check_order ( $where ) {

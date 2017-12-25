@@ -76,6 +76,8 @@ $route['api/reward/donate'] = 'api/reward/donate';
 $route['api/post'] = 'api/post';
 $route['api/instagram/post'] = 'api/post/instagram';
 $route['api/facebook/post'] = 'api/post/facebook';
+$route['api/facebook/tag'] = 'api/post/fbTag';
+$route['api/facebook/friends'] = 'api/post/friends';
 /*
 | -------------------------------------------------------------------------
 | Client Side Routes

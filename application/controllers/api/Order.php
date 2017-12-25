@@ -46,7 +46,7 @@ class Order extends REST_Controller
         $result = $this->checkOrder($where);
 
         if (!$result) {
-            echo json_encode(array('status' => 'failed', 'msg' => 'not matched'));
+            echo json_encode(array('status' => 'failed', 'msg' => 'Order number not recognized.'));
             exit();
         }
 
@@ -87,7 +87,7 @@ class Order extends REST_Controller
 
     private function getOrders ($user) {
         $where = array('user_id' => $user);
-        $orders = $this->Orders_model->get_orders($where);
+        $orders = $this->Orders_model->get_orders($where, 'where');
 
         return $orders;
 
@@ -101,7 +101,7 @@ class Order extends REST_Controller
         }
 
         $products = $order['product_ids'];
-        $products = $this->Products_model->get_products(null, $products);
+        $products = $this->Products_model->get_products(array('id' => $products), 'in');
 
         if (count($products) == 0) {
             return false;

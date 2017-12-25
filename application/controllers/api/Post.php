@@ -121,8 +121,44 @@ class Post extends REST_Controller
 //            'post_id' => '270207716840625_270215833506480',
 //        );
 
+        error_log(json_encode($result), 3, 'debug.log');
+
         if ($result) {
-            echo json_encode(array('status' => 'success', 'msg' => "Image was posted successfully.", 'result' => $result));
+            //$result2 = $this->facebook->request('post', '/'.$result['id'].'/tags', array('tag_text' => "My Tag", 'tag_uid' => '100019680150803'));
+            //error_log(json_encode($result2), 3, 'debug.log');
         }
+
+        if ($result) {
+            echo json_encode(array('status' => 'success', 'msg' => "Congratulations, you have posted successfully!", 'result' => $result));
+        }
+    }
+
+    public function fbTag_post() {
+        $u_id = $this->input->post('u_id');
+        $caption = $this->input->post('caption');
+        $access_token = $this->input->post('fb_token');
+
+        $tag_text = $this->input->post('tag_text');
+        $tag_uid = $this->input->post('tag_uid');
+        $point_x = $this->input->post('tag_x');
+        $point_y = $this->input->post('tag_y');
+        $photo_id = $this->input->post('photo_id');
+
+        $result2 = $this->facebook->request('post', "/$photo_id/tags",
+            array('tag_text' => "$tag_text", 'tag_uid' => "$tag_uid", 'x' => $point_x, 'y' => $point_y),
+            $access_token
+        );
+        error_log(json_encode($result2), 3, 'debug.log');
+
+        echo json_encode($result2);
+    }
+
+    public function friends_post() {
+        $fb_uid = $this->input->post('fb_uid');
+        $access_token = $this->input->post('fb_token');
+
+        $friends = $this->facebook->request('get', "/$fb_uid/permissions", $access_token);
+
+        var_export($friends);
     }
 }

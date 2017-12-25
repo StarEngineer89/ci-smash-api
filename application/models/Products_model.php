@@ -23,15 +23,19 @@ class Products_model extends CI_Model
         }
     }
 
-    public function get_products ( $where, $in, $limit = null, $offset = 0 ) {
+    public function get_products ( $where = null, $conditionType = null, $limit = null, $offset = 0 ) {
         $query = $this->db;
 
-        if ($where != false) {
+        if ($conditionType == 'where') {
             $query = $query->where($where);
         }
 
-        if ($in != false) {
-            $query = $query->where_in($in);
+        if ($conditionType == 'in') {
+            $query = $query->where_in($where);
+        }
+
+        if ($conditionType == 'like') {
+            $query = $query->like($where);
         }
 
         if ($limit) {

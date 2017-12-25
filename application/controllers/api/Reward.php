@@ -23,10 +23,18 @@ class Reward extends REST_Controller
         $type = $this->input->get('donationType');
 
         $user = $this->getUser($u_id);
+
         $point = $user['point'];
-        error_log("poing = " . $point . " ; ", 3, 'debug.log');
+
         if ($type == 'good_karma') {
-            $point = $point - 25;
+
+            if ($user['point'] > 25) {
+                $point = $point - 25;
+            } else {
+                echo json_encode(array('status' => 'failed', 'msg' => "Your Point is not enough to proceed this donation."));
+                die();
+            }
+
         }
 
         $result = $this->updateUser($u_id, array('point' => $point));
